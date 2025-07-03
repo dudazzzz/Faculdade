@@ -1,0 +1,67 @@
+class Navegador:
+    def __init__(self, pagina_inicial):
+        self.historico_voltar = Pila()
+        self.historico_avancar = Pila()
+        self.pagina_atual = pagina_inicial
+        print(f"Navegador iniciado em: {self.pagina_atual}")
+
+    def visitar_pagina(self, url):
+        """
+        Simula a visita a uma nova página.
+
+        Args:
+            url (str): A URL da página a ser visitada.
+        """
+        self.historico_voltar.push(self.pagina_atual)
+        self.pagina_atual = url
+        self.historico_avancar = Pila()  # Limpa histórico_avancar ao visitar nova página
+        print(f"Visitando: {url}")
+
+    def voltar(self):
+        """
+        Simula a ação de voltar no histórico de navegação.
+        """
+        if not self.historico_voltar.esta_vazia():
+            self.historico_avancar.push(self.pagina_atual)
+            self.pagina_atual = self.historico_voltar.pop()
+            print(f"Voltando para: {self.pagina_atual}")
+        else:
+            print("Não há páginas anteriores para voltar.")
+
+    def avancar(self):
+        """
+        Simula a ação de avançar no histórico de navegação.
+        """
+        if not self.historico_avancar.esta_vazia():
+            self.historico_voltar.push(self.pagina_atual)
+            self.pagina_atual = self.historico_avancar.pop()
+            print(f"Avançando para: {self.pagina_atual}")
+        else:
+            print("Não há páginas futuras para avançar.")
+
+# Dica: Comece com uma página inicial e imprima a página atual após cada ação
+# para ver o simulador funcionando.
+navegador = Navegador("home.com")
+print(f"Página atual: {navegador.pagina_atual}")
+
+navegador.visitar_pagina("noticias.com")
+print(f"Página atual: {navegador.pagina_atual}")
+
+navegador.visitar_pagina("esportes.com")
+print(f"Página atual: {navegador.pagina_atual}")
+
+navegador.voltar()
+print(f"Página atual: {navegador.pagina_atual}")
+
+navegador.voltar()
+print(f"Página atual: {navegador.pagina_atual}")
+
+navegador.voltar() # Não deve haver mais páginas para voltar
+
+navegador.avancar()
+print(f"Página atual: {navegador.pagina_atual}")
+
+navegador.visitar_pagina("tecnologia.com") # Limpa o histórico de avanço
+print(f"Página atual: {navegador.pagina_atual}")
+
+navegador.avancar() # Não deve haver páginas para avançar
