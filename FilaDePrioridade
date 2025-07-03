@@ -1,0 +1,87 @@
+class FilaDePrioridade:
+    def __init__(self):
+        self.items = [] # Cada item será uma tupla (dado, prioridade)
+
+    def esta_vazia(self):
+        return len(self.items) == 0
+
+    def enqueue(self, dado, prioridade):
+        """
+        Insere um item na fila de prioridade.
+        A posição de inserção dependerá da prioridade.
+        Itens com menor número de prioridade têm maior prioridade.
+        Se as prioridades forem iguais, mantém a ordem de chegada (FIFO).
+        """
+        novo_item = (dado, prioridade)
+        if self.esta_vazia():
+            self.items.append(novo_item)
+        else:
+            inserido = False
+            for i, (item_dado, item_prioridade) in enumerate(self.items):
+                # Se a nova prioridade for menor (maior prioridade), insere aqui
+                if prioridade < item_prioridade:
+                    self.items.insert(i, novo_item)
+                    inserido = True
+                    break
+                # Se as prioridades forem iguais, insere após itens com a mesma prioridade
+                # para manter a ordem FIFO entre itens de mesma prioridade
+                elif prioridade == item_prioridade:
+                    # Continua procurando a posição correta para manter FIFO se houver mais itens
+                    # com a mesma prioridade.
+                    # Simplificando, se for igual, adicionamos depois dos iguais que já estão lá
+                    # até encontrar um de prioridade menor ou o final da lista.
+                    # A implementação atual já garante isso ao não inserir se prioridade == item_prioridade
+                    # e continuar o loop até encontrar uma prioridade maior ou o final.
+                    pass 
+            if not inserido:
+                self.items.append(novo_item) # Se não encontrou lugar, adiciona no final
+        print(f"Adicionado '{dado}' com prioridade {prioridade}. Fila: {[item[0] for item in self.items]}")
+
+
+    def dequeue(self):
+        """
+        Remove o item com a maior prioridade (o que está no início da fila).
+        """
+        if not self.esta_vazia():
+            dado_removido = self.items.pop(0)
+            print(f"Removido '{dado_removido[0]}' (Prioridade: {dado_removido[1]}). Fila: {[item[0] for item in self.items]}")
+            return dado_removido[0]
+        else:
+            print("Fila de prioridade vazia.")
+            return None
+
+    def frente(self):
+        if not self.esta_vazia():
+            return self.items[0][0]
+        else:
+            return None
+
+    def tamanho(self):
+        return len(self.items)
+
+# Exemplo de uso:
+fila_impressao = FilaDePrioridade()
+
+print("\n--- Cenário da Fila de Impressão com Prioridade ---")
+
+fila_impressao.enqueue("Relatório Urgente", 1)
+fila_impressao.enqueue("Documento Normal", 5)
+fila_impressao.enqueue("E-mail Rápido", 2)
+fila_impressao.enqueue("Imagem de Fundo", 5) # Mesmo prioridade do "Documento Normal"
+
+print(f"\nEstado final da fila antes do dequeue: {[item[0] for item in fila_impressao.items]}")
+
+print("\nRealizando dequeues:")
+primeiro_dequeue = fila_impressao.dequeue()
+print(f"Primeiro dequeue deve retornar 'Relatório Urgente': {primeiro_dequeue == 'Relatório Urgente'}")
+
+segundo_dequeue = fila_impressao.dequeue()
+print(f"Segundo dequeue deve retornar 'E-mail Rápido': {segundo_dequeue == 'E-mail Rápido'}")
+
+terceiro_dequeue = fila_impressao.dequeue()
+print(f"Terceiro dequeue deve retornar 'Documento Normal' (FIFO): {terceiro_dequeue == 'Documento Normal'}")
+
+quarto_dequeue = fila_impressao.dequeue()
+print(f"Quarto dequeue deve retornar 'Imagem de Fundo' (FIFO): {quarto_dequeue == 'Imagem de Fundo'}")
+
+fila_impressao.dequeue() # Tenta remover de uma fila vazia
