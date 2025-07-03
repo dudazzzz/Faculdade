@@ -1,0 +1,81 @@
+-class Fila:
+    def __init__(self):
+        self.items = []
+
+    def esta_vazia(self):
+        return len(self.items) == 0
+
+    def enqueue(self, item):
+        self.items.append(item)
+
+    def dequeue(self):
+        if not self.esta_vazia():
+            return self.items.pop(0)
+        else:
+            return None # Ou levantar uma exceção para fila vazia
+
+    def frente(self):
+        if not self.esta_vazia():
+            return self.items[0]
+        else:
+            return None
+
+    def tamanho(self):
+        return len(self.items)
+
+def novo_cliente(fila, nome_cliente):
+    """
+    Adiciona um novo cliente à fila.
+
+    Args:
+        fila (Fila): A instância da fila de clientes.
+        nome_cliente (str): O nome do cliente a ser adicionado.
+    """
+    fila.enqueue(nome_cliente)
+    print(f"'{nome_cliente}' entrou na fila.")
+
+def atender_cliente(fila):
+    """
+    Remove e retorna o próximo cliente a ser atendido da fila.
+
+    Args:
+        fila (Fila): A instância da fila de clientes.
+
+    Returns:
+        str: O nome do cliente atendido, ou None se a fila estiver vazia.
+    """
+    cliente = fila.dequeue()
+    if cliente:
+        print(f"Atendendo '{cliente}'.")
+    else:
+        print("Fila de atendimento vazia.")
+    return cliente
+
+# Simular o cenário: adicione 3-4 clientes à fila, atenda um, adicione mais um,
+# e depois atenda todos até a fila ficar vazia.
+# Imprima o estado da fila e quem está sendo atendido a cada passo.
+
+fila_clientes = Fila()
+
+print("\n--- Cenário de Atendimento ---")
+
+# Adicione 3-4 clientes
+novo_cliente(fila_clientes, "João")
+novo_cliente(fila_clientes, "Maria")
+novo_cliente(fila_clientes, "Pedro")
+print(f"Estado da fila: {fila_clientes.items}")
+
+# Atenda um cliente
+atender_cliente(fila_clientes)
+print(f"Estado da fila: {fila_clientes.items}")
+
+# Adicione mais um cliente
+novo_cliente(fila_clientes, "Ana")
+print(f"Estado da fila: {fila_clientes.items}")
+
+# Atenda todos até a fila ficar vazia
+while not fila_clientes.esta_vazia():
+    atender_cliente(fila_clientes)
+    print(f"Estado da fila: {fila_clientes.items}")
+
+atender_cliente(fila_clientes) # Tenta atender com a fila vazia
