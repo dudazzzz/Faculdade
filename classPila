@@ -1,0 +1,49 @@
+1-class Pila:
+    def __init__(self):
+        self.items = []
+
+    def esta_vazia(self):
+        return len(self.items) == 0
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.esta_vazia():
+            return self.items.pop()
+        else:
+            return None # Ou levantar uma exceção para pilha vazia
+
+    def topo(self):
+        if not self.esta_vazia():
+            return self.items[-1]
+        else:
+            return None
+
+    def tamanho(self):
+        return len(self.items)
+
+def inverter_string(texto):
+    """
+    Inverte uma string usando uma pilha.
+
+    Args:
+        texto (str): A string a ser invertida.
+
+    Returns:
+        str: A string invertida.
+    """
+    pilha = Pila()
+    for char in texto:
+        pilha.push(char)
+
+    string_invertida = ""
+    while not pilha.esta_vazia():
+        string_invertida += pilha.pop()
+    return string_invertida
+
+# Exemplo de uso:
+entrada = "Python"
+saida = inverter_string(entrada)
+print(f"Entrada: \"{entrada}\"")
+print(f"Saída: \"{saida}\"")
