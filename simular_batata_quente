@@ -1,0 +1,36 @@
+def simular_batata_quente(lista_nomes, num_passes):
+    """
+    Simula o jogo da batata quente.
+
+    Args:
+        lista_nomes (list): Uma lista de nomes dos participantes.
+        num_passes (int): O número de passes aleatórios antes da batata "queimar".
+
+    Returns:
+        str: O nome do vencedor do jogo.
+    """
+    fila_jogo = Fila()
+    for nome in lista_nomes:
+        fila_jogo.enqueue(nome)
+
+    print(f"\n--- Início do Jogo da Batata Quente ---")
+    print(f"Participantes iniciais: {fila_jogo.items}")
+
+    while fila_jogo.tamanho() > 1:
+        # Simula os passes
+        for _ in range(num_passes):
+            jogador = fila_jogo.dequeue()
+            fila_jogo.enqueue(jogador)
+        
+        # A pessoa que está no início da fila "queimou"
+        perdedor = fila_jogo.dequeue()
+        print(f"'{perdedor}' saiu do jogo. Restantes: {fila_jogo.items}")
+
+    vencedor = fila_jogo.dequeue()
+    print(f"--- Fim do Jogo da Batata Quente ---")
+    print(f"O vencedor é: {vencedor}")
+    return vencedor
+
+# Exemplo de uso:
+nomes = ["Ana", "Bia", "Carlos", "Dani", "Eva"]
+vencedor_jogo = simular_batata_quente(nomes, 7)
