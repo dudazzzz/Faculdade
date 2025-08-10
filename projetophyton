@@ -1,0 +1,77 @@
+from collections import deque
+
+# --------------------------
+# Estruturas de Dados
+# --------------------------
+fila = deque()        # Queue
+historico = []        # Lista para armazenar atendimentos
+pilha_acoes = []      # Stack para desfazer ações
+
+# --------------------------
+# Funções
+# --------------------------
+def adicionar_cliente(nome):
+    fila.append(nome)
+    pilha_acoes.append(("adicionar", nome))
+    print(f"✅ Cliente '{nome}' entrou na fila.")
+
+def atender_cliente():
+    if fila:
+        cliente = fila.popleft()
+        historico.append(cliente)
+        pilha_acoes.append(("atender", cliente))
+        print(f"🎯 Cliente '{cliente}' foi atendido.")
+    else:
+        print("⚠️ Não há clientes na fila.")
+
+def desfazer_acao():
+    if not pilha_acoes:
+        print("⚠️ Nenhuma ação para desfazer.")
+        return
+    
+    acao, nome = pilha_acoes.pop()
+    
+    if acao == "adicionar":
+        fila.remove(nome)
+        print(f"↩️ Desfeito: Cliente '{nome}' removido da fila.")
+    elif acao == "atender":
+        historico.remove(nome)
+        fila.appendleft(nome)
+        print(f"↩️ Desfeito: Cliente '{nome}' voltou para o início da fila.")
+
+def mostrar_fila():
+    print("\n📋 Fila atual:", list(fila) if fila else "Vazia")
+
+def mostrar_historico():
+    print("\n📜 Histórico de atendimentos:", historico if historico else "Nenhum atendimento.")
+
+# --------------------------
+# Programa Principal
+# --------------------------
+while True:
+    print("\n--- Sistema de Atendimento ---")
+    print("1 - Adicionar cliente")
+    print("2 - Atender cliente")
+    print("3 - Desfazer última ação")
+    print("4 - Mostrar fila")
+    print("5 - Mostrar histórico")
+    print("0 - Sair")
+    
+    opcao = input("Escolha: ")
+    
+    if opcao == "1":
+        nome = input("Nome do cliente: ")
+        adicionar_cliente(nome)
+    elif opcao == "2":
+        atender_cliente()
+    elif opcao == "3":
+        desfazer_acao()
+    elif opcao == "4":
+        mostrar_fila()
+    elif opcao == "5":
+        mostrar_historico()
+    elif opcao == "0":
+        print("👋 Encerrando o sistema.")
+        break
+    else:
+        print("❌ Opção inválida.")
